@@ -1,13 +1,29 @@
-const { app } = require("@azure/functions");
+require('dotenv').config();
+const { app } = require('@azure/functions');
+const { syncProducts } = require('../services/sync-products');
 
-app.http("sync-product", {
-  methods: ["GET", "POST"],
-  authLevel: "anonymous",
+app.http('sync-product', {
+  methods: ['POST'],
+  authLevel: 'anonymous',
   handler: async (request, context) => {
-    context.log(`Http function processed request for url "${request.url}"`);
+    try {
+      const { store } = JSON.parse(await request.text());
 
-    const name = request.query.get("name") || (await request.text()) || "world";
+      if (!store) {
+        return {
+          status: 400,
+          body: `Bad Request: "store" is required ${request.body}`,
+        };
+      }
 
-    return { body: `Hello, ${name}!` };
+      context.log(`Product Sync request for store "${store}"`);
+
+      syncProducts({ store: store });
+
+      return { body: `${store} store sync has started successfully` };
+    } catch (error) {
+      context.error('Error handling request:', error);
+      return { status: 500, body: 'Internal Server Error' };
+    }
   },
 });
