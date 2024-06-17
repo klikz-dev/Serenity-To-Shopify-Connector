@@ -1,16 +1,16 @@
-const { createAdminRestApiClient } = require('@shopify/admin-api-client');
+const { createAdminApiClient } = require('@shopify/admin-api-client');
 
 const createShopifyClient = (store) => {
   switch (store) {
     case 'CrawlTek':
-      return createAdminRestApiClient({
+      return createAdminApiClient({
         storeDomain: process.env.SHOPIFY_CRAWLTEK_STORE_DOMAIN,
         apiVersion: process.env.SHOPIFY_CRAWLTEK_API_VERSION,
         accessToken: process.env.SHOPIFY_CRAWLTEK_API_TOKEN,
       });
 
     case 'Ridefox':
-      return createAdminRestApiClient({
+      return createAdminApiClient({
         storeDomain: process.env.SHOPIFY_RIDEFOX_STORE_DOMAIN,
         apiVersion: process.env.SHOPIFY_RIDEFOX_API_VERSION,
         accessToken: process.env.SHOPIFY_RIDEFOX_API_TOKEN,

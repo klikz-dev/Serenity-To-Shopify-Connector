@@ -18,9 +18,9 @@ app.http('sync-product', {
 
       context.log(`Product Sync request for store "${store}"`);
 
-      syncProducts({ store: store });
+      await syncProducts({ store: store });
 
-      return { body: `${store} store sync has started successfully` };
+      return { body: `${store} store sync has been completed successfully` };
     } catch (error) {
       context.error('Error handling request:', error);
       return { status: 500, body: 'Internal Server Error' };
